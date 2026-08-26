@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Borne fléchettes</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%230d1117'/><circle cx='16' cy='16' r='9' fill='%23e5484d'/><circle cx='16' cy='16' r='4' fill='%2330a46c'/></svg>">
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+
+<!-- ─────────────────────────── Accueil / configuration ─────────────────── -->
+<section id="ecran-accueil" class="ecran">
+  <header class="entete">
+    <h1>Borne <span>fléchettes</span></h1>
+    <div class="entete-actions">
+      <button class="btn btn-fantome" data-onglet="historique">Historique</button>
+      <button class="btn btn-fantome" data-onglet="joueurs">Statistiques</button>
+    </div>
+  </header>
+
+  <div class="config">
+    <div class="colonne">
+      <h2>1. Le jeu</h2>
+      <div id="liste-jeux" class="cartes-jeux"></div>
+      <div id="options-jeu" class="options"></div>
+    </div>
+
+    <div class="colonne">
+      <h2>2. Les joueurs</h2>
+      <ol id="joueurs-selection" class="joueurs-selection">
+        <li class="vide">Aucun joueur sélectionné</li>
+      </ol>
+      <form id="form-invite" class="ligne-ajout">
+        <input id="champ-invite" type="text" maxlength="24" placeholder="Ajouter un joueur…" autocomplete="off">
+        <button class="btn" type="submit">Ajouter</button>
+      </form>
+      <div id="liste-joueurs" class="pastilles"></div>
+    </div>
+  </div>
+
+  <footer class="pied">
+    <p id="message-accueil" class="message"></p>
+    <button id="btn-demarrer" class="btn btn-primaire btn-xl" disabled>Lancer la partie</button>
+  </footer>
+</section>
+
+<!-- ──────────────────────────────── Partie ─────────────────────────────── -->
+<section id="ecran-partie" class="ecran" hidden>
+  <div class="plateau">
+    <aside class="tableau">
+      <div class="tableau-entete">
+        <span id="titre-jeu"></span>
+        <span id="info-tour"></span>
+      </div>
+      <ol id="scores" class="scores"></ol>
+      <button id="btn-quitter" class="btn btn-fantome btn-quitter">Abandonner</button>
+    </aside>
+
+    <main class="saisie">
+      <div class="volee">
+        <div id="consigne" class="consigne"></div>
+        <div class="volee-corps">
+          <ol id="flechettes" class="flechettes">
+            <li class="creneau"></li><li class="creneau"></li><li class="creneau"></li>
+          </ol>
+          <div class="volee-total"><span id="total-volee">0</span><small>volée</small></div>
+        </div>
+      </div>
+
+      <div class="multiplicateurs" role="group" aria-label="Multiplicateur">
+        <button class="mult" data-mult="1" aria-pressed="true">Simple</button>
+        <button class="mult" data-mult="2" aria-pressed="false">Double</button>
+        <button class="mult" data-mult="3" aria-pressed="false">Triple</button>
+      </div>
+
+      <div id="pave" class="pave"></div>
+
+      <div class="barre-actions">
+        <button id="btn-annuler" class="btn btn-danger btn-lg">↶ Annuler</button>
+        <button id="btn-manque" class="btn btn-lg">Manqué</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Passage de main -->
+  <div id="voile-tour" class="voile" hidden>
+    <div class="voile-carte">
+      <p class="voile-titre" id="voile-resume"></p>
+      <ol id="voile-flechettes" class="flechettes flechettes-voile"></ol>
+      <p class="voile-suivant">Au tour de <strong id="voile-joueur"></strong></p>
+      <p class="voile-aide">Retirez vos fléchettes, puis touchez l'écran</p>
+      <div class="voile-actions">
+        <button id="voile-annuler" class="btn btn-danger">↶ Corriger</button>
+        <button id="voile-ok" class="btn btn-primaire btn-lg">Continuer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fin de partie -->
+  <div id="voile-fin" class="voile" hidden>
+    <div class="voile-carte voile-large">
+      <p class="voile-titre victoire" id="fin-titre"></p>
+      <div id="fin-stats" class="table-stats"></div>
+      <div class="voile-actions">
+        <button id="fin-nouveau" class="btn">Nouvelle partie</button>
+        <button id="fin-revanche" class="btn btn-primaire btn-lg">Revanche</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────────────── Statistiques / historique ────────────────── -->
+<section id="ecran-stats" class="ecran" hidden>
+  <header class="entete">
+    <h1 id="stats-titre">Statistiques</h1>
+    <div class="entete-actions">
+      <button class="btn btn-fantome" data-onglet="historique">Historique</button>
+      <button class="btn btn-fantome" data-onglet="joueurs">Statistiques</button>
+      <button class="btn" data-onglet="accueil">← Retour</button>
+    </div>
+  </header>
+  <div id="stats-contenu" class="stats-contenu"></div>
+</section>
+
+<div id="alerte" class="alerte" hidden></div>
+
+<script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

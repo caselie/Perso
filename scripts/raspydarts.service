@@ -1,0 +1,17 @@
+# Service systemd : lance le serveur de la borne au démarrage.
+#   sudo cp scripts/raspydarts.service /etc/systemd/system/
+#   sudo systemctl enable --now raspydarts
+[Unit]
+Description=Borne de fléchettes — serveur
+After=network.target
+
+[Service]
+Type=simple
+User=borne
+WorkingDirectory=/home/borne/raspydarts
+ExecStart=/home/borne/raspydarts/.venv/bin/python -m app.server --port 8080
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
