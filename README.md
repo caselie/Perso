@@ -128,3 +128,15 @@ python -m pytest tests/test_interface.py -q
 Les tests d'interface pilotent un vrai Chromium : ils déroulent une partie
 complète, vérifient l'annulation, la reprise après rechargement et la
 synchronisation entre deux écrans. Ils sont ignorés si Playwright est absent.
+
+## Vidéos (Remotion)
+
+Le dossier `video/` contient un projet [Remotion](https://www.remotion.dev) pour
+créer des vidéos en React, et `.claude/skills/` les skills officiels Remotion
+pour Claude Code.
+
+```bash
+cd video && npm install
+npm run dev                                   # Remotion Studio, aperçu en direct
+npx remotion render HelloWorld out/demo.mp4   # rendu MP4
+```
