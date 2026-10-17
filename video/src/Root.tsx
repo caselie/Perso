@@ -8,6 +8,7 @@ import { Cible } from "./Borne/Cible";
 import { PresentationBorne } from "./Borne/PresentationBorne";
 import { Accroche, Atouts, Bust, Fin, Impact, Victoire } from "./Borne/Scenes";
 import { couleurs } from "./Borne/theme";
+import { PhotoCinematique } from "./Photo/PhotoCinematique";
 
 const vertical = { fps: 30, width: 1080, height: 1920 } as const;
 const centre = {
@@ -22,6 +23,14 @@ const centre = {
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="PhotoCinematique"
+        component={PhotoCinematique}
+        durationInFrames={480}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
       <Composition
         id="PresentationBorne"
         component={PresentationBorne}
