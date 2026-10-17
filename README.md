@@ -138,5 +138,5 @@ pour Claude Code.
 ```bash
 cd video && npm install
 npm run dev                                   # Remotion Studio, aperçu en direct
-npx remotion render HelloWorld out/demo.mp4   # rendu MP4
+npx remotion render PresentationBorne out/presentation-borne.mp4  # vidéo verticale de la borne
 ```
