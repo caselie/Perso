@@ -20,5 +20,13 @@ export const couleurs = {
 export const police = "Inter";
 export const policeMono = "JetBrains Mono";
 
-loadFont({ family: police, url: staticFile("fonts/Inter.woff2"), weight: "100 900" });
-loadFont({ family: policeMono, url: staticFile("fonts/JetBrainsMono.woff2"), weight: "100 800" });
+loadFont({
+  family: police,
+  url: staticFile("fonts/Inter.woff2"),
+  weight: "100 900",
+});
+loadFont({
+  family: policeMono,
+  url: staticFile("fonts/JetBrainsMono.woff2"),
+  weight: "100 800",
+});

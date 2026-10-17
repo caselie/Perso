@@ -3,6 +3,7 @@ import { HelloWorld } from "./HelloWorld";
 import { Logo } from "./HelloWorld/Logo";
 import { Title } from "./HelloWorld/Title";
 import { Atout } from "./Borne/Atout";
+import { BorneReelle } from "./Borne/BorneReelle";
 import { Cible } from "./Borne/Cible";
 import { PresentationBorne } from "./Borne/PresentationBorne";
 import { Accroche, Atouts, Bust, Fin, Impact, Victoire } from "./Borne/Scenes";
@@ -24,7 +25,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="PresentationBorne"
         component={PresentationBorne}
-        durationInFrames={570}
+        durationInFrames={720}
         {...vertical}
       />
       <Folder name="Borne-scenes">
@@ -32,6 +33,13 @@ export const RemotionRoot: React.FC = () => {
           id="Accroche"
           component={Accroche}
           durationInFrames={75}
+          {...vertical}
+          defaultProps={{ style: centre }}
+        />
+        <Composition
+          id="BorneReelle"
+          component={BorneReelle}
+          durationInFrames={150}
           {...vertical}
           defaultProps={{ style: centre }}
         />

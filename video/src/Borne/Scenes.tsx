@@ -1,7 +1,9 @@
+import { Audio } from "@remotion/media";
 import {
   Easing,
   Interactive,
   interpolate,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
@@ -78,6 +80,13 @@ const AccrocheInner = () => {
         <br />
         fléchettes.
       </Interactive.Div>
+      <Audio name="Whoosh" src={staticFile("sfx/whoosh.wav")} volume={0.5} />
+      <Audio
+        name="Fouet"
+        src={staticFile("sfx/whip.wav")}
+        from={0.8 * fps}
+        volume={0.7}
+      />
     </>
   );
 };
@@ -187,6 +196,19 @@ const ImpactInner = () => {
           )}
         </span>
       </Interactive.Div>
+      <Audio
+        name="Vol"
+        src={staticFile("sfx/whoosh.wav")}
+        from={impact - 0.4 * fps}
+        volume={0.6}
+      />
+      <Audio name="Impact" src={staticFile("sfx/impact.wav")} from={impact} />
+      <Audio
+        name="Pastille"
+        src={staticFile("sfx/switch.wav")}
+        from={impact + 2}
+        volume={0.5}
+      />
     </>
   );
 };
@@ -329,6 +351,24 @@ const BustInner = () => {
         <br />
         Et passe la main.
       </Interactive.Div>
+      <Audio
+        name="Premier S20"
+        src={staticFile("sfx/impact.wav")}
+        from={premiere}
+        volume={0.8}
+      />
+      <Audio
+        name="Second S20"
+        src={staticFile("sfx/impact.wav")}
+        from={bust}
+        volume={0.8}
+      />
+      <Audio
+        name="Buzzer"
+        src={staticFile("sfx/buzzer.wav")}
+        from={bust + 2}
+        volume={0.6}
+      />
     </>
   );
 };
@@ -430,6 +470,17 @@ const VictoireInner = () => {
       >
         GAGNÉ !
       </Interactive.Div>
+      <Audio
+        name="Impact D16"
+        src={staticFile("sfx/impact.wav")}
+        from={impact}
+      />
+      <Audio
+        name="Jingle"
+        src={staticFile("sfx/victoire.wav")}
+        from={impact + 0.2 * fps}
+        volume={0.7}
+      />
     </>
   );
 };
@@ -492,6 +543,30 @@ const AtoutsInner = () => {
       >
         Stats, 180, et reprise après une coupure
       </Atout>
+      <Audio
+        name="Jeux"
+        src={staticFile("sfx/switch.wav")}
+        from={0.3 * fps}
+        volume={0.4}
+      />
+      <Audio
+        name="Cible"
+        src={staticFile("sfx/switch.wav")}
+        from={0.6 * fps}
+        volume={0.4}
+      />
+      <Audio
+        name="Télécommande"
+        src={staticFile("sfx/switch.wav")}
+        from={0.9 * fps}
+        volume={0.4}
+      />
+      <Audio
+        name="Stats"
+        src={staticFile("sfx/switch.wav")}
+        from={1.2 * fps}
+        volume={0.4}
+      />
     </>
   );
 };
@@ -569,6 +644,21 @@ const FinInner = () => {
       >
         Open source · Flask + SQLite · zéro abonnement
       </Interactive.Div>
+      {COMMANDE.split("").map((_, k) => (
+        <Audio
+          key={k}
+          name="Frappe"
+          src={staticFile("sfx/touche.wav")}
+          from={Math.round(0.2 * fps + (k * 0.8 * fps) / COMMANDE.length)}
+          volume={0.5}
+        />
+      ))}
+      <Audio
+        name="Slogan"
+        src={staticFile("sfx/whoosh.wav")}
+        from={1.2 * fps}
+        volume={0.5}
+      />
     </>
   );
 };
