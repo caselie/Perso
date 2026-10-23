@@ -30,6 +30,8 @@ Pour développer, sans ouvrir de navigateur :
 ./scripts/run.sh --serveur       # http://127.0.0.1:8080
 ```
 
+Autre projet : un [nichoir connecté avec ESP32-CAM](nichoir/README.md).
+
 Le montage physique (cotes de la cible, distribution Linux, démarrage
 automatique, saisie sans écran tactile) est décrit dans
 [`docs/borne.md`](docs/borne.md).

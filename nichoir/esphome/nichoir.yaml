@@ -1,0 +1,140 @@
+# Nichoir connecté — ESP32-CAM (AI-Thinker) + vision infrarouge.
+# Câblage et fabrication : ../README.md
+#
+#   Flux vidéo  : http://nichoir.local:8080   (MJPEG, dans n'importe quel navigateur)
+#   Photo       : http://nichoir.local:8081
+#   Tableau web : http://nichoir.local        (IR, températures, redémarrage)
+
+substitutions:
+  nom: nichoir
+  pin_ir: GPIO13          # base du transistor qui pilote les LED IR
+  pin_temp: GPIO14        # DS18B20 (pull-up 4,7 kΩ vers 3,3 V)
+
+esphome:
+  name: ${nom}
+  friendly_name: Nichoir
+  on_boot:
+    priority: 600
+    then:
+      - switch.turn_off: flash_blanc
+
+esp32:
+  board: esp32cam
+  framework:
+    type: esp-idf
+
+# 4 Mo de PSRAM sur l'AI-Thinker : indispensable pour les images en 800x600.
+psram:
+
+logger:
+  level: INFO
+
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  # Le bois atténue le signal : on ne laisse pas la radio s'endormir pendant le flux.
+  power_save_mode: none
+  ap:
+    ssid: "Nichoir secours"
+    password: !secret ap_password
+
+captive_portal:
+
+web_server:
+  port: 80
+
+# --- Caméra -----------------------------------------------------------------
+# Brochage standard de l'AI-Thinker. Capteur OV2640 SANS filtre IR (« NoIR »).
+esp32_camera:
+  name: Caméra
+  external_clock:
+    pin: GPIO0
+    frequency: 20MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+  resolution: 800x600
+  jpeg_quality: 12
+  max_framerate: 10 fps
+  idle_framerate: 0.1 fps
+  # Sous IR l'image couleur vire au violet : le noir et blanc est plus net.
+  special_effect: grayscale
+  # La caméra regarde vers le bas depuis le plafond : ajuste selon ton montage.
+  vertical_flip: true
+  horizontal_mirror: true
+  aec_mode: auto
+  agc_mode: auto
+
+esp32_camera_web_server:
+  - port: 8080
+    mode: stream
+  - port: 8081
+    mode: snapshot
+
+# --- Éclairage infrarouge ---------------------------------------------------
+output:
+  - platform: ledc
+    id: sortie_ir
+    pin: ${pin_ir}
+    frequency: 19531Hz
+
+light:
+  - platform: monochromatic
+    name: Infrarouge
+    id: infrarouge
+    output: sortie_ir
+    default_transition_length: 0s
+    restore_mode: RESTORE_DEFAULT_ON
+    initial_state:
+      brightness: 60%
+
+# Le flash blanc de la carte (GPIO4) effraierait les oiseaux : verrouillé éteint.
+switch:
+  - platform: gpio
+    id: flash_blanc
+    pin: GPIO4
+    restore_mode: ALWAYS_OFF
+    internal: true
+  - platform: gpio
+    id: led_rouge
+    pin:
+      number: GPIO33
+      inverted: true
+    restore_mode: ALWAYS_OFF
+    internal: true
+
+button:
+  - platform: restart
+    name: Redémarrer
+
+# --- Capteurs ---------------------------------------------------------------
+one_wire:
+  - platform: gpio
+    pin: ${pin_temp}
+
+sensor:
+  - platform: dallas_temp
+    name: Température du nid
+    update_interval: 60s
+  - platform: internal_temperature
+    name: Température de l'électronique
+    update_interval: 60s
+  - platform: wifi_signal
+    name: Signal Wi-Fi
+    update_interval: 120s
+  - platform: uptime
+    name: Uptime
+    update_interval: 300s

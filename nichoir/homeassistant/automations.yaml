@@ -1,0 +1,43 @@
+# À coller dans automations.yaml de Home Assistant (ou via l'éditeur YAML).
+# Vérifie les identifiants d'entités après l'adoption de l'appareil ESPHome.
+
+# Une photo toutes les 10 minutes → matière pour le timelapse de la saison.
+- alias: Nichoir — photo périodique
+  id: nichoir_photo_periodique
+  mode: single
+  triggers:
+    - trigger: time_pattern
+      minutes: /10
+  actions:
+    - action: light.turn_on
+      target:
+        entity_id: light.nichoir_infrarouge
+      data:
+        brightness_pct: 80
+    - delay: 2   # le capteur ajuste son exposition
+    - action: camera.snapshot
+      target:
+        entity_id: camera.nichoir_camera
+      data:
+        filename: "/media/nichoir/{{ now().strftime('%Y-%m-%d/%H%M') }}.jpg"
+    - action: light.turn_on
+      target:
+        entity_id: light.nichoir_infrarouge
+      data:
+        brightness_pct: 60
+
+# Le nid est trop chaud (été, toit en plein soleil) : on prévient.
+- alias: Nichoir — alerte chaleur
+  id: nichoir_alerte_chaleur
+  triggers:
+    - trigger: numeric_state
+      entity_id: sensor.nichoir_temperature_du_nid
+      above: 35
+      for: "00:15:00"
+  actions:
+    - action: notify.notify
+      data:
+        title: Nichoir
+        message: >-
+          {{ states('sensor.nichoir_temperature_du_nid') }} °C dans le nid :
+          ombre le toit ou ajoute de la ventilation.
